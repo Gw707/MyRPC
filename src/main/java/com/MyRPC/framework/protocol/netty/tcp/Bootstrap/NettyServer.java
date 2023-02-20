@@ -1,5 +1,7 @@
-package com.MyRPC.framework.protocol.netty.tcp;
+package com.MyRPC.framework.protocol.netty.tcp.Bootstrap;
 
+import com.MyRPC.framework.protocol.netty.tcp.Handler.IdleEventHandler;
+import com.MyRPC.framework.protocol.netty.tcp.Handler.NettyServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -12,6 +14,9 @@ import io.netty.handler.codec.bytes.ByteArrayDecoder;
 import io.netty.handler.codec.bytes.ByteArrayEncoder;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
+import io.netty.handler.timeout.IdleStateHandler;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Description 调用startServer0()方法开启服务器
@@ -41,6 +46,9 @@ public class NettyServer {
                             pipeline.addLast(new ByteArrayDecoder());
                             pipeline.addLast(new ByteArrayEncoder());
                             pipeline.addLast(new NettyServerHandler());
+                            //设置可以接受的TimeOut时间
+                            pipeline.addLast(new IdleStateHandler(5, 5, 5, TimeUnit.SECONDS));
+                            pipeline.addLast(new IdleEventHandler());
                         }
                     });
 

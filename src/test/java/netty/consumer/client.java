@@ -1,7 +1,7 @@
 package netty.consumer;
 
 import netty.provider.HelloService.HelloService;
-import com.MyRPC.framework.protocol.netty.tcp.NettyClient;
+import com.MyRPC.framework.protocol.netty.tcp.Bootstrap.NettyClient;
 
 /**
  * @Description TODO
