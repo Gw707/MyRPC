@@ -1,12 +1,10 @@
 package com.MyRPC.framework.protocol.netty.tcp.Handler;
 
-import com.MyRPC.framework.Invocation;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
+import com.MyRPC.framework.protocol.netty.tcp.message.ServiceRequestMessage;
+import com.MyRPC.framework.protocol.netty.tcp.message.ServiceResponseMessage;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.util.CharsetUtil;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.Callable;
 
@@ -16,28 +14,29 @@ import java.util.concurrent.Callable;
  * @Date 2023/2/14 11:07
  * @Version 1.0
  */
-public class NettyClientHandler extends ChannelInboundHandlerAdapter implements Callable {
+
+@Slf4j
+public class RequestMessageHandler extends SimpleChannelInboundHandler<ServiceResponseMessage> implements Callable {
 
     private ChannelHandlerContext context;
 
-    private static String result;
+    private static Object result;
 
-    private String info;
+    private ServiceRequestMessage requestMessage;
 
-    public void setInfo(String info) {
-        this.info = info;
+    public void setRequestMessage(ServiceRequestMessage requestMessage) {
+        this.requestMessage = requestMessage;
     }
 
     @Override
-    public synchronized void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+    protected synchronized void channelRead0(ChannelHandlerContext channelHandlerContext, ServiceResponseMessage serviceResponseMessage) throws Exception {
         //得到远程调用返回的数据，进行打印
-        result = "调用成功，返回的结果为：" + msg.toString();
+        result = serviceResponseMessage.getResult();
         notify();
     }
-
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-
+        log.debug("client is ready...");
         //在channel建立完成后进行远程过程调用
         context = ctx;
 //        ctx.channel().writeAndFlush(Unpooled.copiedBuffer("HelloService#Hello#ygw".getBytes()));
@@ -58,9 +57,10 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter implements 
     @Override
     public synchronized Object call() throws Exception {
         //将Invocation信息传给服务器
-        context.channel().writeAndFlush(info);
+        context.channel().writeAndFlush(requestMessage);
         wait();
         return result;
     }
+
 
 }

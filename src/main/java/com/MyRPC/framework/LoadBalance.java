@@ -1,6 +1,6 @@
 package com.MyRPC.framework;
 
-import com.MyRPC.framework.protocol.register.URL;
+import com.MyRPC.framework.register.URL;
 
 import java.util.List;
 import java.util.Random;

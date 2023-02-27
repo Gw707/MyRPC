@@ -1,9 +1,9 @@
 package http.provider;
 
 import com.MyRPC.framework.protocol.http.HttpServer;
-import com.MyRPC.framework.protocol.register.LocalRegister;
-import com.MyRPC.framework.protocol.register.RemoteRegister;
-import com.MyRPC.framework.protocol.register.URL;
+import com.MyRPC.framework.register.LocalRegister;
+import com.MyRPC.framework.register.RemoteRegister;
+import com.MyRPC.framework.register.URL;
 import http.provider.HelloService.HelloService;
 import http.provider.HelloServiceImpl.HelloServiceImpl;
 

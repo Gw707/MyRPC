@@ -1,4 +1,4 @@
-package com.MyRPC.framework;
+package com.MyRPC.framework.protocol.http;
 
 import java.io.Serializable;
 import java.util.Arrays;

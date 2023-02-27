@@ -1,11 +1,10 @@
 package com.MyRPC.framework.protocol.netty.tcp.Handler;
 
-import com.MyRPC.framework.Invocation;
-import com.MyRPC.framework.protocol.register.LocalRegister;
-import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONReader;
+import com.MyRPC.framework.protocol.netty.tcp.message.ServiceRequestMessage;
+import com.MyRPC.framework.protocol.netty.tcp.message.ServiceResponseMessage;
+import com.MyRPC.framework.register.LocalRegister;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.SimpleChannelInboundHandler;
 
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
@@ -16,7 +15,7 @@ import java.text.SimpleDateFormat;
  * @Date 2023/2/14 11:06
  * @Version 1.0
  */
-public class NettyServerHandler extends ChannelInboundHandlerAdapter {
+public class ResponseMessageHandler extends SimpleChannelInboundHandler<ServiceRequestMessage> {
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -28,21 +27,14 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
         ctx.read();
     }
 
-
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object info) throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, ServiceRequestMessage serviceRequestMessage) throws Exception {
+        System.out.println( ctx.channel().remoteAddress()+ " 的调用信息为：" + serviceRequestMessage.toString());
 
-        System.out.println( ctx.channel().remoteAddress()+ " 的调用信息为：" + info.toString());
-        JSON.config(JSONReader.Feature.SupportClassForName, true);
-        Invocation invocation = JSON.parseObject(info.toString(), Invocation.class);
-
-//        System.out.println(invocation.toString());
-//        String result = new HelloServiceImpl().sayHello(msg.toString());
-
-        String interfaceName = invocation.getInterfaceName();
-        String methodName = invocation.getMethodName();
-        Class[] paramTypes = invocation.getParamTypes();
-        Object[] params = invocation.getParams();
+        String interfaceName = serviceRequestMessage.getInterfaceName();
+        String methodName = serviceRequestMessage.getMethodName();
+        Class[] paramTypes = serviceRequestMessage.getParamTypes();
+        Object[] params = serviceRequestMessage.getParams();
 
         //TODO 获取本地注册信息，注册信息为  map：interface-implClass
         Class clazz = LocalRegister.getClass(interfaceName);
@@ -53,8 +45,10 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
         //调用本地实现方法
         Object result = method.invoke(clazz.getDeclaredConstructor().newInstance(), params);
 
-        String res = JSON.toJSONString(result);
-        ctx.channel().writeAndFlush(res);
+        ServiceResponseMessage responseMessage = new ServiceResponseMessage();
+        responseMessage.setResultType(method.getReturnType());
+        responseMessage.setResult(result);
+        ctx.channel().writeAndFlush(responseMessage);
     }
 
     @Override

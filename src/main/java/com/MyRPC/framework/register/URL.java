@@ -1,4 +1,4 @@
-package com.MyRPC.framework.protocol.register;
+package com.MyRPC.framework.register;
 
 import java.io.Serializable;
 

@@ -10,7 +10,6 @@ import netty.provider.HelloService.HelloService;
  * @Version 1.0
  */
 public class HelloServiceImpl implements HelloService {
-    @Override
     public String sayHello(String info) {
         return "server received ...." + info;
     }

@@ -1,7 +1,7 @@
 package netty.consumer;
 
+import com.MyRPC.framework.protocol.netty.tcp.Bootstrap.ProxyFactoryForNetty;
 import netty.provider.HelloService.HelloService;
-import com.MyRPC.framework.protocol.netty.tcp.Bootstrap.NettyClient;
 
 /**
  * @Description TODO
@@ -10,9 +10,8 @@ import com.MyRPC.framework.protocol.netty.tcp.Bootstrap.NettyClient;
  * @Version 1.0
  */
 public class client {
-    public static void main(String[] args) {
-        NettyClient nettyClient = new NettyClient();
-        HelloService helloService = nettyClient.getInstance(HelloService.class);
+    public static void main(String[] args) throws Exception {
+        HelloService helloService = ProxyFactoryForNetty.getInstance(HelloService.class);
 
         String result = helloService.sayHello("ygw");
         System.out.println(result);

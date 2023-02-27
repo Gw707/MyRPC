@@ -1,6 +1,5 @@
 package com.MyRPC.framework.protocol.http;
 
-import com.MyRPC.framework.Invocation;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
@@ -21,7 +20,7 @@ import java.nio.charset.Charset;
  */
 public class HttpClient {
 
-    public String send(com.MyRPC.framework.protocol.register.URL tarURL, Invocation invocation){
+    public String send(com.MyRPC.framework.register.URL tarURL, Invocation invocation){
 
         String result = null;
 

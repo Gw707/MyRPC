@@ -1,7 +1,10 @@
 package com.MyRPC.framework.protocol.netty.tcp.Bootstrap;
 
-import com.MyRPC.framework.protocol.netty.tcp.Handler.IdleEventHandler;
-import com.MyRPC.framework.protocol.netty.tcp.Handler.NettyServerHandler;
+import com.MyRPC.framework.protocol.netty.tcp.codec.MessageCodec;
+import com.MyRPC.framework.protocol.netty.tcp.codec.MyFrameDecoder;
+import com.MyRPC.framework.protocol.netty.tcp.Handler.HeartBeatHandler;
+import com.MyRPC.framework.protocol.netty.tcp.Handler.PingMessageHandler;
+import com.MyRPC.framework.protocol.netty.tcp.Handler.ResponseMessageHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -10,13 +13,8 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.bytes.ByteArrayDecoder;
-import io.netty.handler.codec.bytes.ByteArrayEncoder;
-import io.netty.handler.codec.string.StringDecoder;
-import io.netty.handler.codec.string.StringEncoder;
+import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.IdleStateHandler;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * @Description 调用startServer0()方法开启服务器
@@ -41,14 +39,13 @@ public class NettyServer {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             ChannelPipeline pipeline = socketChannel.pipeline();
-                            pipeline.addLast(new StringDecoder());
-                            pipeline.addLast(new StringEncoder());
-                            pipeline.addLast(new ByteArrayDecoder());
-                            pipeline.addLast(new ByteArrayEncoder());
-                            pipeline.addLast(new NettyServerHandler());
-                            //设置可以接受的TimeOut时间
-                            pipeline.addLast(new IdleStateHandler(5, 5, 5, TimeUnit.SECONDS));
-                            pipeline.addLast(new IdleEventHandler());
+                            pipeline.addLast(new MyFrameDecoder());
+                            pipeline.addLast(new LoggingHandler());
+                            pipeline.addLast(new MessageCodec());
+                            pipeline.addLast(new PingMessageHandler());
+                            pipeline.addLast(new IdleStateHandler(0, 0, 5));
+                            pipeline.addLast(new HeartBeatHandler());
+                            pipeline.addLast(new ResponseMessageHandler());
                         }
                     });
 
