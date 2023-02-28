@@ -1,7 +1,8 @@
-package com.MyRPC.framework.protocol.netty.tcp.Bootstrap;
+package com.MyRPC.framework.protocol.netty.tcp.proxy;
 
+import com.MyRPC.framework.protocol.netty.tcp.bootstrap.NettyClient;
 import com.MyRPC.framework.protocol.netty.tcp.message.ServiceRequestMessage;
-import com.MyRPC.framework.protocol.netty.tcp.Handler.RequestMessageHandler;
+import com.MyRPC.framework.protocol.netty.tcp.handler.RequestMessageHandler;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Proxy;

@@ -2,6 +2,7 @@ package netty.provider.HelloServiceImpl;
 
 
 import netty.provider.HelloService.HelloService;
+import netty.provider.HelloService.User;
 
 /**
  * @Description TODO
@@ -12,5 +13,10 @@ import netty.provider.HelloService.HelloService;
 public class HelloServiceImpl implements HelloService {
     public String sayHello(String info) {
         return "server received ...." + info;
+    }
+
+    @Override
+    public User getUsers() {
+        return new User("yyy", "111");
     }
 }

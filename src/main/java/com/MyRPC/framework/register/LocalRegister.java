@@ -20,6 +20,9 @@ public class LocalRegister {
      * @param implClass
      */
     public static void regist(String interfaceName, Class implClass){
+        if (map.containsKey(interfaceName)){
+            return;
+        }
         map.put(interfaceName, implClass);
     }
 

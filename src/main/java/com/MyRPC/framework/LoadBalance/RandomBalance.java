@@ -1,4 +1,4 @@
-package com.MyRPC.framework;
+package com.MyRPC.framework.LoadBalance;
 
 import com.MyRPC.framework.register.URL;
 
@@ -11,7 +11,7 @@ import java.util.Random;
  * @Date 2022/12/7 17:08
  * @Version 1.0
  */
-public class LoadBalance {
+public class RandomBalance {
 
     public static URL RandomURL(List<URL> list){
 

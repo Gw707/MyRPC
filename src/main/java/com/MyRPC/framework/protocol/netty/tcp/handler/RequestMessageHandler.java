@@ -1,4 +1,4 @@
-package com.MyRPC.framework.protocol.netty.tcp.Handler;
+package com.MyRPC.framework.protocol.netty.tcp.handler;
 
 import com.MyRPC.framework.protocol.netty.tcp.message.ServiceRequestMessage;
 import com.MyRPC.framework.protocol.netty.tcp.message.ServiceResponseMessage;
@@ -32,11 +32,12 @@ public class RequestMessageHandler extends SimpleChannelInboundHandler<ServiceRe
     protected synchronized void channelRead0(ChannelHandlerContext channelHandlerContext, ServiceResponseMessage serviceResponseMessage) throws Exception {
         //得到远程调用返回的数据，进行打印
         result = serviceResponseMessage.getResult();
+//        System.out.println(result.toString());
         notify();
     }
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        log.debug("client is ready...");
+        System.out.println("client is ready...");
         //在channel建立完成后进行远程过程调用
         context = ctx;
 //        ctx.channel().writeAndFlush(Unpooled.copiedBuffer("HelloService#Hello#ygw".getBytes()));

@@ -2,7 +2,7 @@ package netty.provider;
 
 import netty.provider.HelloService.HelloService;
 import netty.provider.HelloServiceImpl.HelloServiceImpl;
-import com.MyRPC.framework.protocol.netty.tcp.Bootstrap.NettyServer;
+import com.MyRPC.framework.protocol.netty.tcp.bootstrap.NettyServer;
 import com.MyRPC.framework.register.LocalRegister;
 
 /**

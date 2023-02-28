@@ -1,4 +1,4 @@
-package com.MyRPC.framework.protocol.netty.tcp.Handler;
+package com.MyRPC.framework.protocol.netty.tcp.handler;
 
 import com.MyRPC.framework.protocol.netty.tcp.message.ServiceRequestMessage;
 import com.MyRPC.framework.protocol.netty.tcp.message.ServiceResponseMessage;
@@ -29,7 +29,7 @@ public class ResponseMessageHandler extends SimpleChannelInboundHandler<ServiceR
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ServiceRequestMessage serviceRequestMessage) throws Exception {
-        System.out.println( ctx.channel().remoteAddress()+ " 的调用信息为：" + serviceRequestMessage.toString());
+//        System.out.println( ctx.channel().remoteAddress()+ " 的调用信息为：" + serviceRequestMessage.toString());
 
         String interfaceName = serviceRequestMessage.getInterfaceName();
         String methodName = serviceRequestMessage.getMethodName();

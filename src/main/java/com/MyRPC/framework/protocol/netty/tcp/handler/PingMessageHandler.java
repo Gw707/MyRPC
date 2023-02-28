@@ -1,4 +1,4 @@
-package com.MyRPC.framework.protocol.netty.tcp.Handler;
+package com.MyRPC.framework.protocol.netty.tcp.handler;
 
 import com.MyRPC.framework.protocol.netty.tcp.message.PingMessage;
 import io.netty.channel.ChannelHandlerContext;

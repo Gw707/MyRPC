@@ -1,10 +1,11 @@
-package com.MyRPC.framework.protocol.netty.tcp.Bootstrap;
+package com.MyRPC.framework.protocol.netty.tcp.bootstrap;
 
 
 import com.MyRPC.framework.protocol.netty.tcp.codec.MessageCodec;
 import com.MyRPC.framework.protocol.netty.tcp.codec.MyFrameDecoder;
-import com.MyRPC.framework.protocol.netty.tcp.Handler.HeartBeatHandler;
-import com.MyRPC.framework.protocol.netty.tcp.Handler.RequestMessageHandler;
+import com.MyRPC.framework.protocol.netty.tcp.handler.HeartBeatHandler;
+import com.MyRPC.framework.protocol.netty.tcp.handler.RequestMessageHandler;
+import com.MyRPC.framework.protocol.netty.tcp.handler.ResponseMessageHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -64,6 +65,7 @@ public class NettyClient {
                         pipeline.addLast(new IdleStateHandler(0, 3, 0));
                         pipeline.addLast(new HeartBeatHandler());
                         pipeline.addLast(requestMessageHandler);
+                        pipeline.addLast(new ResponseMessageHandler());
                     }
                 });
         ChannelFuture channelFuture = bootstrap.connect(host, port).sync();
